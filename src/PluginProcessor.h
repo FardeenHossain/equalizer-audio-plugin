@@ -3,6 +3,15 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_dsp/juce_dsp.h>
 
+struct ChainSettings
+{
+    float peakFreq{0}, peakGainInDecibels{0}, peakQuality{1.0f};
+    float lowCutFreq{0}, highCutFreq{0};
+    float lowCutSlope{0}, highCutSlope{0};
+};
+
+ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts);
+
 //==============================================================================
 class AudioPluginAudioProcessor  : public juce::AudioProcessor
 {
@@ -53,6 +62,13 @@ private:
     
     MonoChain leftChain, rightChain;
 
+    enum ChainPositions
+    {
+        LowCut,
+        Peak,
+        HighCut
+    };
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessor)
 };
