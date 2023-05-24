@@ -3,7 +3,14 @@
 
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
-    : AudioProcessorEditor (&p), processorRef (p)
+    : AudioProcessorEditor (&p), processorRef (p),
+    peakFreqSliderAttachment(processorRef.apvts, "Peak Freq", peakFreqSlider),
+    peakGainSliderAttachment(processorRef.apvts, "Peak Gain", peakGainSlider),
+    peakQualitySliderAttachment(processorRef.apvts, "Peak Quality", peakQualitySlider),
+    lowCutFreqSliderAttachment(processorRef.apvts, "Low Cut Freq", lowCutFreqSlider),
+    lowCutSlopeSliderAttachment(processorRef.apvts, "Low Cut Slope", lowCutSlopeSlider),
+    highCutFreqSliderAttachment(processorRef.apvts, "High Cut Freq", highCutFreqSlider),
+    highCutSlopeSliderAttachment(processorRef.apvts, "High Cut Slope", highCutSlopeSlider)
 {
     juce::ignoreUnused (processorRef);
     // Make sure that before the constructor has finished, you've set the
