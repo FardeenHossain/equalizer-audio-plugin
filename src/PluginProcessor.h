@@ -21,6 +21,17 @@ struct ChainSettings
 
 ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts);
 
+using Filter = juce::dsp::IIR::Filter<float>;
+using CutFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter>;
+using MonoChain = juce::dsp::ProcessorChain<CutFilter, Filter, CutFilter>;
+
+enum ChainPositions
+{
+    LowCut,
+    Peak,
+    HighCut
+};
+
 //==============================================================================
 class AudioPluginAudioProcessor  : public juce::AudioProcessor
 {
@@ -65,21 +76,10 @@ public:
     juce::AudioProcessorValueTreeState apvts {*this, nullptr, "Parameters", createParameterLayout()};
 
 private:
-    using Filter = juce::dsp::IIR::Filter<float>;
-    using CutFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter>;
-    using MonoChain = juce::dsp::ProcessorChain<CutFilter, Filter, CutFilter>;
-    using Coefficients = Filter::CoefficientsPtr;
-
     MonoChain leftChain, rightChain;
 
-    enum ChainPositions
-    {
-        LowCut,
-        Peak,
-        HighCut
-    };
-
     void updatePeakFilter(const ChainSettings &ChainSettings);
+    using Coefficients = Filter::CoefficientsPtr;
     static void updateCoefficients(Coefficients &old, const Coefficients &replacements);
 
     template<int Index, typename ChainType, typename CoefficientType>
