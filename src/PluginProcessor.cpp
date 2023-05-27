@@ -213,17 +213,22 @@ ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts)
     return settings;
 }
 
+Coefficients makePeakFilter(const ChainSettings &chainSettings, double sampleRate)
+{
+    return juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate, 
+        chainSettings.peakFreq, chainSettings.peakQuality, 
+        juce::Decibels::decibelsToGain(chainSettings.peakGainInDecibels));
+}
+
 void AudioPluginAudioProcessor::updatePeakFilter(const ChainSettings &chainSettings)
 {
-     auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(
-        getSampleRate(), chainSettings.peakFreq, chainSettings.peakQuality, 
-        juce::Decibels::decibelsToGain(chainSettings.peakGainInDecibels));
+    auto peakCoefficients = makePeakFilter(chainSettings, getSampleRate());
 
     updateCoefficients(leftChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
     updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
 }
 
-void AudioPluginAudioProcessor::updateCoefficients(Coefficients &old, const Coefficients &replacements)
+void updateCoefficients(Coefficients &old, const Coefficients &replacements)
 {
     *old = *replacements;
 }
@@ -275,7 +280,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
         juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.25f), 1000.0f));
     
     layout.add(std::make_unique<juce::AudioParameterFloat>("Peak Gain", "Peak Gain", 
-        juce::NormalisableRange<float>(-18.0f, 18.0f, 0.1f, 1.0f), 0.0f));
+        juce::NormalisableRange<float>(-24.0f, 24.0f, 0.1f, 1.0f), 0.0f));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Peak Quality", "Peak Quality", 
         juce::NormalisableRange<float>(0.2f, 12.0f, 0.1f, 1.0f), 1.0f));
