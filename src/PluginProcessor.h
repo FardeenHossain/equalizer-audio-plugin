@@ -54,20 +54,16 @@ void updateCutFilter(ChainType &chain, const CoefficientType &coefficients, cons
 
     switch (slope)
     {
-        case Slope_48:
-        {
+        case Slope_48:{
             update<3>(chain, coefficients);
         }
-        case Slope_36:
-        {
+        case Slope_36:{
             update<2>(chain, coefficients);
         }
-        case Slope_24:
-        {
+        case Slope_24:{
             update<1>(chain, coefficients);
         }
-        case Slope_12:
-        {
+        case Slope_12:{
             update<0>(chain, coefficients);
         }
     }

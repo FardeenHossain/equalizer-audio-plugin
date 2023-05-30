@@ -49,7 +49,7 @@ void ResponseCurveComponent::timerCallback()
     }
 }
 
-void ResponseCurveComponent::paint (juce::Graphics& g)
+void ResponseCurveComponent::paint (juce::Graphics &g)
 {
     using namespace juce;
 
@@ -73,48 +73,33 @@ void ResponseCurveComponent::paint (juce::Graphics& g)
         double mag = 1.0f;
         auto freq = mapToLog10(double(i) / double(w), 20.0, 20000.0);
 
-        if (!monoChain.isBypassed<ChainPositions::Peak>())
-        {
+        if (!monoChain.isBypassed<ChainPositions::Peak>()){
             mag *= peak.coefficients -> getMagnitudeForFrequency(freq, sampleRate);
         }
 
-        if (!lowcut.isBypassed<0>())
-        {
+        if (!lowcut.isBypassed<0>()){
             mag *= lowcut.get<0>().coefficients -> getMagnitudeForFrequency(freq, sampleRate);
         }
-
-        if (!lowcut.isBypassed<1>())
-        {
+        if (!lowcut.isBypassed<1>()){
             mag *= lowcut.get<1>().coefficients -> getMagnitudeForFrequency(freq, sampleRate);
         }
-
-        if (!lowcut.isBypassed<2>())
-        {
+        if (!lowcut.isBypassed<2>()){
             mag *= lowcut.get<2>().coefficients -> getMagnitudeForFrequency(freq, sampleRate);
         }
-
-        if (!lowcut.isBypassed<3>())
-        {
+        if (!lowcut.isBypassed<3>()){
             mag *= lowcut.get<3>().coefficients -> getMagnitudeForFrequency(freq, sampleRate);
         }
 
-         if (!highcut.isBypassed<0>())
-        {
+        if (!highcut.isBypassed<0>()){
             mag *= highcut.get<0>().coefficients -> getMagnitudeForFrequency(freq, sampleRate);
         }
-
-        if (!highcut.isBypassed<1>())
-        {
+        if (!highcut.isBypassed<1>()){
             mag *= highcut.get<1>().coefficients -> getMagnitudeForFrequency(freq, sampleRate);
         }
-
-        if (!highcut.isBypassed<2>())
-        {
+        if (!highcut.isBypassed<2>()){
             mag *= highcut.get<2>().coefficients -> getMagnitudeForFrequency(freq, sampleRate);
         }
-
-        if (!highcut.isBypassed<3>())
-        {
+        if (!highcut.isBypassed<3>()){
             mag *= highcut.get<3>().coefficients -> getMagnitudeForFrequency(freq, sampleRate);
         }
 
@@ -145,7 +130,7 @@ void ResponseCurveComponent::paint (juce::Graphics& g)
     g.strokePath(responseCurve, PathStrokeType(2.0f));
 }
 
-AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
+AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor &p)
     : AudioProcessorEditor (&p), processorRef (p), 
 
     peakFreqSlider(*processorRef.apvts.getParameter("Peak Freq"), "Hz"),
@@ -183,7 +168,7 @@ AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
 }
 
 //==============================================================================
-void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
+void AudioPluginAudioProcessorEditor::paint (juce::Graphics &g)
 {
     using namespace juce;
 

@@ -53,7 +53,6 @@ struct ResponseCurveComponent : juce::Component, juce::AudioProcessorParameter::
 private:
     AudioPluginAudioProcessor &processorRef;
     juce::Atomic<bool> parametersChanged{false};
-
     MonoChain monoChain;
 };
 

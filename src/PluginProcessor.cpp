@@ -172,7 +172,6 @@ bool AudioPluginAudioProcessor::hasEditor() const
 juce::AudioProcessorEditor* AudioPluginAudioProcessor::createEditor()
 {
     return new AudioPluginAudioProcessorEditor (*this);
-    // return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================
@@ -237,8 +236,8 @@ void AudioPluginAudioProcessor::updateLowCutFilters(const ChainSettings &chainSe
 {
     auto cutCoefficients = makeLowCutFilter(chainSettings, getSampleRate());
 
-    auto& leftLowCut = leftChain.get<ChainPositions::LowCut>();
-    auto& rightLowCut = rightChain.get<ChainPositions::LowCut>();
+    auto &leftLowCut = leftChain.get<ChainPositions::LowCut>();
+    auto &rightLowCut = rightChain.get<ChainPositions::LowCut>();
 
     updateCutFilter(leftLowCut, cutCoefficients, chainSettings.lowCutSlope);
     updateCutFilter(rightLowCut, cutCoefficients, chainSettings.lowCutSlope);
@@ -248,8 +247,8 @@ void AudioPluginAudioProcessor::updateHighCutFilters(const ChainSettings &chainS
 {
     auto cutCoefficients = makeHighCutFilter(chainSettings, getSampleRate());
 
-    auto& leftHighCut = leftChain.get<ChainPositions::HighCut>();
-    auto& rightHighCut = rightChain.get<ChainPositions::HighCut>();
+    auto &leftHighCut = leftChain.get<ChainPositions::HighCut>();
+    auto &rightHighCut = rightChain.get<ChainPositions::HighCut>();
 
     updateCutFilter(leftHighCut, cutCoefficients, chainSettings.highCutSlope);
     updateCutFilter(rightHighCut, cutCoefficients, chainSettings.highCutSlope);
@@ -284,10 +283,16 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
         juce::NormalisableRange<float>(0.2f, 12.0f, 0.1f, 1.0f), 1.0f));
 
     juce::StringArray stringArray;
-    stringArray.add("12 dB/oct");
-    stringArray.add("24 dB/oct");
-    stringArray.add("36 dB/oct");
-    stringArray.add("48 dB/oct");
+
+    for (int i = 0; i < 4; i++)
+    {
+        juce::String str;
+
+        str << (12 + i * 12);
+        str << " dB/oct";
+
+        stringArray.add(str);
+    }
 
     layout.add(std::make_unique<juce::AudioParameterChoice>("Low Cut Slope", "Low Cut Slope", stringArray, 0));
     layout.add(std::make_unique<juce::AudioParameterChoice>("High Cut Slope", "High Cut Slope", stringArray, 0));
