@@ -84,7 +84,38 @@ juce::Rectangle<int> RotarySliderWithLabels::getSliderBounds() const
 
 juce::String RotarySliderWithLabels::getDisplayString() const
 {
-    return juce::String(getValue());
+    if (auto *choiceParam = dynamic_cast<juce::AudioParameterChoice*>(param)){
+        return choiceParam -> getCurrentChoiceName();
+    }
+
+    juce::String str;
+    bool addK = false;
+
+    if (auto *floatParam = dynamic_cast<juce::AudioParameterFloat*>(param))
+    {
+        float val = getValue();
+
+        if (val > 999.0f)
+        {
+            val /= 1000.0f;
+            addK = true;
+        }
+
+        str = juce::String(val, (addK ? 2 : 0));
+    }
+
+    if (suffix.isNotEmpty())
+    {
+        str << " ";
+
+        if (addK){
+            str << "k";
+        }
+
+        str << suffix;
+    }
+
+    return str;
 }
  
 //==============================================================================
