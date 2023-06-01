@@ -10,11 +10,11 @@ void LookAndFeel::drawRotarySlider(juce::Graphics &g, int x, int y, int width, i
 
     auto bounds = Rectangle<float>(x, y, width, height);
     
-    g.setColour(Colour(46u, 46u, 46u));
+    g.setColour(Colour(33u, 33u, 33u));
     g.fillEllipse(bounds);
 
-    g.setColour(Colour(255u, 255u, 255u));  
-    g.drawEllipse(bounds, 1.0f);
+    g.setColour(Colour(187u, 134u, 252u));  
+    g.drawEllipse(bounds, 2.0f);
 
     if (auto *rswl = dynamic_cast<RotarySliderWithLabels*>(&slider))
     {
@@ -45,7 +45,7 @@ void LookAndFeel::drawRotarySlider(juce::Graphics &g, int x, int y, int width, i
         r.setSize(strWidth + 4, rswl -> getTextHeight() + 2);
         r.setCentre(bounds.getCentre());
 
-        g.setColour(Colours::white);
+        g.setColour(Colours::white);  
         g.drawFittedText(text, r.toNearestInt(), juce::Justification::centred, 1);
     }
 }
@@ -69,7 +69,7 @@ void RotarySliderWithLabels::paint(juce::Graphics &g)
     auto center = sliderBounds.toFloat().getCentre();
     auto radius = sliderBounds.getWidth() * 0.5f;
 
-    g.setColour(Colours::white);
+    g.setColour(Colours::white);  
     g.setFont(getTextHeight());
 
     auto numChoices = labels.size();
@@ -129,7 +129,7 @@ juce::String RotarySliderWithLabels::getDisplayString() const
             addK = true;
         }
 
-        str = juce::String(val, (addK ? 2 : 0));
+        str = juce::String(val, (addK ? 2 : 1));
     }
 
     if (suffix.isNotEmpty())
@@ -205,7 +205,7 @@ void ResponseCurveComponent::paint (juce::Graphics &g)
     using namespace juce;
 
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (Colours::black);
+    g.fillAll (Colour(18u, 18u, 18u));
 
     auto responseArea = getLocalBounds();
     auto w = responseArea.getWidth();
@@ -274,8 +274,8 @@ void ResponseCurveComponent::paint (juce::Graphics &g)
         responseCurve.lineTo(responseArea.getX() + i, map(mags[i]));
     }
 
-    g.setColour(Colours::orange);
-    g.drawRoundedRectangle(responseArea.toFloat(), 4.0f, 1.0f);
+    g.setColour(Colours::black);  
+    g.fillRoundedRectangle(responseArea.toFloat(), 0.0f);
 
     g.setColour(Colours::white);
     g.strokePath(responseCurve, PathStrokeType(2.0f));
@@ -331,7 +331,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
         addAndMakeVisible(comp);
     }
 
-    setSize (600, 400);
+    setSize (600, 480);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -345,7 +345,7 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics &g)
     using namespace juce;
 
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (Colours::black);
+    g.fillAll(Colour(18u, 18u, 18u));
 }
 
 void AudioPluginAudioProcessorEditor::resized()
