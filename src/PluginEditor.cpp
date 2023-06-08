@@ -69,7 +69,7 @@ void RotarySliderWithLabels::paint(juce::Graphics &g)
     auto center = sliderBounds.toFloat().getCentre();
     auto radius = sliderBounds.getWidth() * 0.5f;
 
-    g.setColour(Colours::white);  
+    g.setColour(Colour(3u, 218u, 197u));  
     g.setFont(getTextHeight());
 
     auto numChoices = labels.size();
@@ -207,7 +207,7 @@ void ResponseCurveComponent::paint (juce::Graphics &g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (Colour(18u, 18u, 18u));
 
-    auto responseArea = getLocalBounds();
+    auto responseArea = getAnalysisArea();
     auto w = responseArea.getWidth();
 
     auto &lowcut = monoChain.get<ChainPositions::LowCut>();
@@ -275,11 +275,69 @@ void ResponseCurveComponent::paint (juce::Graphics &g)
     }
 
     g.setColour(Colours::black);  
-    g.fillRoundedRectangle(responseArea.toFloat(), 0.0f);
+    g.fillRoundedRectangle(getRenderArea().toFloat(), 0.0f);
+
+    g.drawImage(background, getRenderArea().toFloat());
 
     g.setColour(Colours::white);
     g.strokePath(responseCurve, PathStrokeType(2.0f));
 }
+
+void ResponseCurveComponent::resized()
+{
+    using namespace juce;
+
+    background = Image(Image::PixelFormat::RGB, getWidth(), getHeight(), true);
+
+    Graphics g(background);
+    
+    Array<float> freqs{20, 30, 40, 50, 100, 200, 300, 400, 500, 1000, 2000, 3000, 4000, 5000, 10000, 20000};
+    Array<float> gain{-24, -12, 0, 12, 24};
+
+    auto renderArea = getRenderArea();
+
+    auto top = renderArea.getY();
+    auto bottom = renderArea.getBottom();
+  
+    g.setColour(Colour(33u, 33u, 33u));
+
+    for (auto f : freqs)
+    {
+        auto normX = mapFromLog10(f, 20.0f, 20000.0f);
+        g.drawVerticalLine(getWidth()*normX, 0.0f, getHeight());
+    }
+
+    for (auto gDb : gain)
+    {
+        auto y = jmap(gDb, -24.0f, 24.0f, float(bottom), float(top));
+        g.setColour(gDb == 0.0f ? Colour(3u, 218u, 197u) : Colour(33u, 33u, 33u));
+        g.drawHorizontalLine(y, 0, getWidth());
+    }
+}
+
+juce::Rectangle<int> ResponseCurveComponent::getRenderArea()
+{
+    auto bounds = getLocalBounds();
+    
+    bounds.removeFromTop(12);
+    bounds.removeFromBottom(12);
+    bounds.removeFromLeft(20);
+    bounds.removeFromRight(20);
+
+    return bounds;
+}
+
+juce::Rectangle<int> ResponseCurveComponent::getAnalysisArea()
+{
+    auto bounds = getRenderArea();
+
+    bounds.removeFromTop(4);
+    bounds.removeFromBottom(4);
+
+    return bounds;
+}
+ 
+//==============================================================================
 
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor &p)
     : AudioProcessorEditor (&p), processorRef (p), 

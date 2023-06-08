@@ -57,11 +57,18 @@ struct ResponseCurveComponent : juce::Component, juce::AudioProcessorParameter::
     void parameterGestureChanged (int parameterIndex, bool gestureIsStarting) override{};
     void timerCallback() override;
     void paint(juce::Graphics &g) override;
+    void resized() override;
 
 private:
     AudioPluginAudioProcessor &processorRef;
+
     juce::Atomic<bool> parametersChanged{false};
+    juce::Image background;
+    juce::Rectangle<int> getRenderArea();
+    juce::Rectangle<int> getAnalysisArea();
+
     MonoChain monoChain;
+    
     void updateChain();
 };
 
