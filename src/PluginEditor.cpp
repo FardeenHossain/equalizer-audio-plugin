@@ -324,13 +324,15 @@ void ResponseCurveComponent::paint (juce::Graphics &g)
         responseCurve.lineTo(responseArea.getX() + i, map(mags[i]));
     }
 
+    leftChannelFFTPath.applyTransform(AffineTransform().translation(responseArea.getX(), responseArea.getY()));
+
     g.setColour(Colours::black);  
     g.fillRoundedRectangle(getRenderArea().toFloat(), 0.0f);
 
     g.drawImage(background, getRenderArea().toFloat());
 
     g.setColour(Colour(187u, 134u, 252u));  
-    g.strokePath(leftChannelFFTPath, PathStrokeType(1));
+    g.strokePath(leftChannelFFTPath, PathStrokeType(2.0f));
 
     g.setColour(Colours::white);
     g.strokePath(responseCurve, PathStrokeType(2.0f));
