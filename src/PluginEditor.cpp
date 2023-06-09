@@ -207,7 +207,7 @@ void ResponseCurveComponent::paint (juce::Graphics &g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (Colour(18u, 18u, 18u));
 
-    auto responseArea = getAnalysisArea();
+    auto responseArea = getRenderArea();
     auto w = responseArea.getWidth();
 
     auto &lowcut = monoChain.get<ChainPositions::LowCut>();
@@ -291,13 +291,15 @@ void ResponseCurveComponent::resized()
 
     Graphics g(background);
     
-    Array<float> freqs{20, 30, 40, 50, 100, 200, 300, 400, 500, 1000, 2000, 3000, 4000, 5000, 10000, 20000};
-    Array<float> gain{-24, -12, 0, 12, 24};
+    Array<float> freqs
+    {
+        10, 20, 30, 40, 50, 60, 70, 80, 90, 
+        100, 200, 300, 400, 500, 600, 700, 800, 900,
+        1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000,
+        20000
+    };
 
-    auto renderArea = getRenderArea();
-
-    auto top = renderArea.getY();
-    auto bottom = renderArea.getBottom();
+    Array<float> gain{-24, -18, -12, -6, 0, 6, 12, 18, 24};
   
     g.setColour(Colour(33u, 33u, 33u));
 
@@ -309,7 +311,7 @@ void ResponseCurveComponent::resized()
 
     for (auto gDb : gain)
     {
-        auto y = jmap(gDb, -24.0f, 24.0f, float(bottom), float(top));
+        auto y = jmap(gDb, -24.0f, 24.0f, float(getHeight()), 0.0f);
         g.setColour(gDb == 0.0f ? Colour(3u, 218u, 197u) : Colour(33u, 33u, 33u));
         g.drawHorizontalLine(y, 0, getWidth());
     }
@@ -327,16 +329,6 @@ juce::Rectangle<int> ResponseCurveComponent::getRenderArea()
     return bounds;
 }
 
-juce::Rectangle<int> ResponseCurveComponent::getAnalysisArea()
-{
-    auto bounds = getRenderArea();
-
-    bounds.removeFromTop(4);
-    bounds.removeFromBottom(4);
-
-    return bounds;
-}
- 
 //==============================================================================
 
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor &p)
