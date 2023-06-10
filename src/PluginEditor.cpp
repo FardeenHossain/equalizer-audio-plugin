@@ -224,7 +224,7 @@ void ResponseCurveComponent::timerCallback()
             juce::FloatVectorOperations::copy(monoBuffer.getWritePointer(0, monoBuffer.getNumSamples() - size),
                                               tempIncomingBuffer.getReadPointer(0, 0), size);
             
-            leftChannelFFTDataGenerator.produceFFTDataForRendering(monoBuffer, -48.0f);
+            leftChannelFFTDataGenerator.produceFFTDataForRendering(monoBuffer, -96.0f);
         }
     }
 
@@ -243,7 +243,7 @@ void ResponseCurveComponent::timerCallback()
 
         if (leftChannelFFTDataGenerator.getFFTData(fftData))
         {
-            pathProducer.generatePath(fftData, fftBounds, fftSize, binWidth, -48.0f);
+            pathProducer.generatePath(fftData, fftBounds, fftSize, binWidth, -96.0f);
         }
     }
 
@@ -260,9 +260,9 @@ void ResponseCurveComponent::timerCallback()
         // Update the monochain
         updateChain();
 
-        // Signal a repaint
     }
 
+    // Signal a repaint
     repaint();
 }
 
@@ -521,7 +521,7 @@ void AudioPluginAudioProcessorEditor::resized()
     auto responseArea = bounds.removeFromTop(bounds.getHeight() * hRatio);
 
     responseCurveComponent.setBounds(responseArea);
-    
+
     bounds.removeFromTop(5);
     bounds.removeFromBottom(5);
 
