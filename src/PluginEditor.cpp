@@ -416,7 +416,6 @@ juce::Rectangle<int> ResponseCurveComponent::getRenderArea()
     auto bounds = getLocalBounds();
     
     bounds.removeFromTop(10);
-    bounds.removeFromBottom(10);
     bounds.removeFromLeft(20);
     bounds.removeFromRight(20);
 
@@ -502,17 +501,10 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics &g)
     g.fillAll(Colour(18u, 18u, 18u));
 
     auto bounds = getLocalBounds();
-    auto appBarArea = bounds.removeFromTop(40);
-
-    g.setColour(Colour(33u, 33u, 33u));
-    g.fillRect(appBarArea);
 
     g.setColour(juce::Colours::white);
-
-    appBarArea.removeFromLeft(20);
     g.setFont(16);
 
-    g.drawFittedText("Equalizer Audio Plugin", appBarArea, juce::Justification::centredLeft, 1);
     g.drawFittedText("Low Cut", lowCutSlopeSlider.getBounds(), juce::Justification::centredBottom, 1);
     g.drawFittedText("Peak", peakQualitySlider.getBounds(), juce::Justification::centredBottom, 1);
     g.drawFittedText("High Cut", highCutSlopeSlider.getBounds(), juce::Justification::centredBottom, 1);
@@ -524,15 +516,14 @@ void AudioPluginAudioProcessorEditor::resized()
     // subcomponents in your editor..
 
     auto bounds = getLocalBounds();
-
-    bounds.removeFromTop(40);
-    bounds.removeFromBottom(5);
     
     float hRatio = 25.0f / 100.0f;
     auto responseArea = bounds.removeFromTop(bounds.getHeight() * hRatio);
 
     responseCurveComponent.setBounds(responseArea);
+    
     bounds.removeFromTop(5);
+    bounds.removeFromBottom(5);
 
     auto lowCutArea = bounds.removeFromLeft(bounds.getWidth() * 0.33);
     auto highCutArea = bounds.removeFromRight(bounds.getWidth() * 0.5);
