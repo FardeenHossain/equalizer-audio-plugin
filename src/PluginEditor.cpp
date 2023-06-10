@@ -73,7 +73,7 @@ void LookAndFeel::drawToggleButton(juce::Graphics &g, juce::ToggleButton &toggle
     PathStrokeType pst(2.0f, PathStrokeType::JointStyle::curved);
 
     auto color = toggleButton.getToggleState() ? Colour(33u, 33u, 33u) : Colour(3u, 218u, 197u);
-    
+
     g.setColour(color);
     g.strokePath(powerButton, pst);
 }
@@ -97,7 +97,7 @@ void RotarySliderWithLabels::paint(juce::Graphics &g)
     auto center = sliderBounds.toFloat().getCentre();
     auto radius = sliderBounds.getWidth() * 0.5f;
 
-    g.setColour(Colour(3u, 218u, 197u));  
+    g.setColour(Colours::grey);  
     g.setFont(getTextHeight());
 
     auto numChoices = labels.size();
@@ -415,8 +415,8 @@ juce::Rectangle<int> ResponseCurveComponent::getRenderArea()
 {
     auto bounds = getLocalBounds();
     
-    bounds.removeFromTop(12);
-    bounds.removeFromBottom(12);
+    bounds.removeFromTop(10);
+    bounds.removeFromBottom(10);
     bounds.removeFromLeft(20);
     bounds.removeFromRight(20);
 
@@ -500,6 +500,22 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics &g)
 
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll(Colour(18u, 18u, 18u));
+
+    auto bounds = getLocalBounds();
+    auto appBarArea = bounds.removeFromTop(40);
+
+    g.setColour(Colour(33u, 33u, 33u));
+    g.fillRect(appBarArea);
+
+    g.setColour(juce::Colours::white);
+
+    appBarArea.removeFromLeft(20);
+    g.setFont(16);
+
+    g.drawFittedText("Equalizer Audio Plugin", appBarArea, juce::Justification::centredLeft, 1);
+    g.drawFittedText("Low Cut", lowCutSlopeSlider.getBounds(), juce::Justification::centredBottom, 1);
+    g.drawFittedText("Peak", peakQualitySlider.getBounds(), juce::Justification::centredBottom, 1);
+    g.drawFittedText("High Cut", highCutSlopeSlider.getBounds(), juce::Justification::centredBottom, 1);
 }
 
 void AudioPluginAudioProcessorEditor::resized()
@@ -508,6 +524,10 @@ void AudioPluginAudioProcessorEditor::resized()
     // subcomponents in your editor..
 
     auto bounds = getLocalBounds();
+
+    bounds.removeFromTop(40);
+    bounds.removeFromBottom(5);
+    
     float hRatio = 25.0f / 100.0f;
     auto responseArea = bounds.removeFromTop(bounds.getHeight() * hRatio);
 
