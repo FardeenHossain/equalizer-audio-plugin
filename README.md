@@ -1,16 +1,32 @@
-# Equalizer Audio Plug-In
+# Equalizer Audio Plugin
 
-Audio plugin with low cut, peak, and high cut filters, bypass buttons, and a response curve. Built with C++, CMake, and JUCE.
+Audio plugin with low, high, and band-pass filtering, bypass buttons, and response curve. Built with C++, CMake, and JUCE.
 
-## Screenshot
+## Getting Starting
 
-<img width="400" alt="equalizer-audio-plugin" src="https://github.com/FardeenHossain/equalizer-audio-plugin/assets/96121562/4a7e2e6b-8a9e-4cde-a89b-97102d8ef46c">
+### Installing
+
+- Clone the repository into your local machine:
+
+```
+git clone https://github.com/FardeenHossain/equalizer-audio-plugin.git
+```
+
+- Compile the code using CMake:
+
+```
+cd equalizer-audio-plugin
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make
+```
 
 ## Built With
 
-- C++ - Programming language
-- CMake - Build system generator
-- JUCE - Application framework
+- **C++** - Programming language
+- **CMake** - Build system generator
+- **JUCE** - Application framework
 
 ## Authors
 
