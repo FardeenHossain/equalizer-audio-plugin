@@ -2,7 +2,7 @@
 
 Audio plugin with low, high, and band-pass filtering, bypass buttons, and response curve. Built with C++, CMake, and JUCE.
 
-## Getting Starting
+## Getting Started
 
 ### Installing
 
