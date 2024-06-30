@@ -15,7 +15,7 @@ git clone https://github.com/FardeenHossain/equalizer-plugin.git
 - Compile the code using CMake:
 
 ```
-cd equalizer-audio-plugin
+cd equalizer-plugin
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
