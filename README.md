@@ -1,4 +1,4 @@
-# Equalizer Audio Plugin
+# Equalizer Plugin
 
 Audio plugin with low, high, and band-pass filtering, bypass buttons, and response curve. Built with C++, CMake, and JUCE.
 
