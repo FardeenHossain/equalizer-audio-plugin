@@ -9,7 +9,7 @@ Audio plugin with low, high, and band-pass filtering, bypass buttons, and respon
 - Clone the repository into your local machine:
 
 ```
-git clone https://github.com/FardeenHossain/equalizer-audio-plugin.git
+git clone https://github.com/FardeenHossain/equalizer-plugin.git
 ```
 
 - Compile the code using CMake:
